@@ -8,6 +8,7 @@ import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
+import reducer from './Reducers/IndexReducer';
 
 const store = createStore( reducer, composeWithDevTools(applyMiddleware(thunk)));
 
