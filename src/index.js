@@ -8,9 +8,9 @@ import thunk from 'redux-thunk';
 
 import './index.css';
 import App from './App';
-import reducer from './Reducers/IndexReducer';
+import IndexReducer from './Reducers/IndexReducer';
 
-const store = createStore( reducer, composeWithDevTools(applyMiddleware(thunk)));
+const store = createStore( IndexReducer, composeWithDevTools(applyMiddleware(thunk)));
 
 ReactDOM.render(
     <Provider store={store}>
