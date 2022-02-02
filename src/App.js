@@ -1,27 +1,37 @@
-import React from "react";
+import React, {useEffect, useState} from "react";
 
 import "./App.css";
 import Info from "./Components/Info";
-import Form from "./Components/Form";
-import Weather_info from "./Components/Weather_info";
+import {Form} from "./Components/Form";
+import {Weather_info} from "./Components/Weather_info";
 
-const API_KEY = "0026a7482713c18fc1f16d74d7ee751f";
+const API_KEY = process.env.REACT_APP_API_KEY;
 
-class App extends React.Component{
-
-    state = {
+const App = () => {
+    const [localState, setLocalState] = useState({
         temp: undefined,
         city: undefined,
         country: undefined,
         sunrise: undefined,
         sunset: undefined,
         error: undefined
-    }
-
-    gettingWeather = async (e) => {
+    })
+    useEffect(() => {
+        const selectedCities = JSON.parse(localStorage.getItem('selectedCities'))
+        console.log('selectedCities =', selectedCities)
+    })
+    const gettingWeather = async (e) => {
         e.preventDefault();
         let city = e.target.elements.city.value;
         if (city){
+            const localCitiesArray = localStorage.getItem('selectedCities')
+            let selectedCities = [];
+            if (localCitiesArray){
+                selectedCities = JSON.parse(localCitiesArray)
+            }
+            !selectedCities.includes(city) && selectedCities.push(city)
+            localStorage.setItem('selectedCities', JSON.stringify(selectedCities))
+            console.log("selectedCities = ",selectedCities)
             const api_url = await
                 // fetch(`https://api.openweathermap.org/data/2.5/weather?q=Kiev&appid=${API_KEY}&units=metric`);
                 fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&appid=${API_KEY}&units=metric`);
@@ -38,8 +48,8 @@ class App extends React.Component{
             dateSunrise.setTime(sunrise);
             let sunrise_date = dateSunrise.getHours() + ":" + dateSunrise.getMinutes() + ":" + dateSunrise.getSeconds() + " A.M.";
 
-            this.setState({
-                temp: data.main.temp,
+            setLocalState({
+                temp: Math.round(data.main.temp),
                 city: data.name,
                 country: data.sys.country,
                 sunrise: sunrise_date,
@@ -49,22 +59,14 @@ class App extends React.Component{
         }
     }
 
-    render() {
-        return (
-        <div>
-            <Info />
-            <Form weatherMethod = {this.gettingWeather}/>
-            <Weather_info
-                temp = {this.state.temp}
-                city = {this.state.city}
-                country = {this.state.country}
-                sunrise = {this.state.sunrise}
-                sunset = {this.state.sunset}
-                error = {this.state.error}
-            />
-        </div>
-        );
-    }
+    console.log(process.env.REACT_APP_API_KEY)
+    return (
+    <div>
+        <Info/>
+        <Form weatherMethod={gettingWeather}/>
+        <Weather_info state={localState}/>
+    </div>
+    );
 }
 
 export default App;
