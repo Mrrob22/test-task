@@ -5,8 +5,9 @@ import {Provider} from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
 import {composeWithDevTools} from "redux-devtools-extension";
 import thunk from 'redux-thunk';
+// import 'bootstrap/dist/css/bootstrap.min.css';
 
-import './index.css';
+import './App.css';
 import App from './App';
 import IndexReducer from './Reducers/IndexReducer';
 

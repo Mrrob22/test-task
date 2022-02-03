@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from "react";
 
 import "./App.css";
+import 'bootstrap/dist/css/bootstrap.min.css';
 import Info from "./Components/Info";
 import {Form} from "./Components/Form";
 import {Weather_info} from "./Components/Weather_info";
@@ -54,19 +55,38 @@ const App = () => {
                 country: data.sys.country,
                 sunrise: sunrise_date,
                 sunset: sunset_date,
-                error: "",
+                error: undefined,
             });
+        } else {
+            setLocalState({
+                temp: undefined,
+                city: undefined,
+                country: undefined,
+                sunrise: undefined,
+                sunset: undefined,
+                error: "Введите город"
+            })
         }
     }
 
     console.log(process.env.REACT_APP_API_KEY)
     return (
-    <div>
-        <Info/>
-        <Form weatherMethod={gettingWeather}/>
-        <Weather_info state={localState}/>
-    </div>
-    );
+        <div className="wrapper">
+            <div className="main">
+                <div className="container">
+                    <div className="row">
+                        <div className="col-sm-5 info">
+                            <Info/>
+                        </div>
+                        <div className="col-sm-7 form">
+                            <Form weatherMethod={gettingWeather}/>
+                            <Weather_info state={localState}/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    )
 }
 
 export default App;
