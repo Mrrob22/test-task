@@ -15,9 +15,9 @@ const store = createStore( IndexReducer, composeWithDevTools(applyMiddleware(thu
 
 ReactDOM.render(
     <Provider store={store}>
-        <BrowserRouter>
+        {/*<BrowserRouter>*/}
             <App/>
-        </BrowserRouter>
+        {/*</BrowserRouter>*/}
     </Provider>,
     document.getElementById('root')
 );
