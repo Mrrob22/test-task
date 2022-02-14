@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from "react";
-import {useParams} from 'react-router-dom';
+import {useLinkClickHandler, useParams} from 'react-router-dom';
 
 const API_KEY = process.env.REACT_APP_API_KEY;
 
@@ -14,6 +14,13 @@ export const DetailCityPage = () =>{
                 setCurrentWeather(weather)
             });
     }, [cityName])
+    const clickHandler = (cityName) =>{
+        fetch(`https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${API_KEY}&units=metric`)
+            .then (async response => {
+                const weather = await response.json()
+                setCurrentWeather(weather)
+            });
+    }
     console.log('currentWeather =', currentWeather)
     return(
         <div>
@@ -23,6 +30,7 @@ export const DetailCityPage = () =>{
             <div>Ощущаеться как = {currentWeather ? (Math.round(currentWeather.main.feels_like)) : null}</div>
             <div>Ветер = {currentWeather ? (Math.round(currentWeather.wind.speed)) : null} м/c</div>
             <div>Температрура максимальная/инимальная = {currentWeather ? (Math.round(currentWeather.main.temp_max)) : null} / {currentWeather ? (Math.round(currentWeather.main.temp_min)) : null}</div>
+            <button onClick={()=>clickHandler(cityName)}>Обновить данные</button>
         </div>
     )
 }
