@@ -1,12 +1,15 @@
 import React from "react";
-import {Route, BrowserRouter, Switch} from "react-router-dom";
+import {Route, BrowserRouter, Routes} from "react-router-dom";
 import {MainPage} from '../../Pages/MainPage'
+import {DetailCityPage} from '../../Pages/DetailCityPage'
 
-export const RouterComponent = () => {
+export const RouteComponent = () => {
     return (
         <BrowserRouter>
-                <Route exact path = '/' component = {MainPage} />
-                {/*<Route path = '/:cityName' component = {DetailForecastComponent} />*/}
+            <Routes>
+                <Route exact path = '/' element={<MainPage />} />
+                <Route path = '/:cityName' element={<DetailCityPage />} />
+            </Routes>
         </BrowserRouter>
     )
 }
